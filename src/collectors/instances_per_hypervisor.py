@@ -9,7 +9,7 @@ class InstancesPerHypervisorCollector(Collector):
         self.cloud = cloud
 
     def collect(self):
-        instances_per_hypervisor_gauge = GaugeMetricFamily('instances_per_hypervisor', 'Number of instances per hypervisor', labels=['hypervisor_name', 'hypervisor_id'])
+        instances_per_hypervisor_gauge = GaugeMetricFamily('openstack_peepo_exporter_instances_per_hypervisor', 'Number of instances per hypervisor', labels=['hypervisor_name', 'hypervisor_id'])
         metrics = instances_per_hypervisor.export_metrics(self.cloud)
         print(f"data: {metrics}")
         for metric in metrics:
