@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openstack-peepo-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openstack-peepo-exporter
+  template:
+    metadata:
+      labels:
+        app: openstack-peepo-exporter
+    spec:
+      containers:
+        - name: openstack-peepo-exporter
+          image: openstack-peepo-exporter:latest
+          command: ["python"]
+          args: ["/app/src/main.py", "--cloud", "openstack"]
+          volumeMounts:
+            - name: openstack-config
+              mountPath: /etc/openstack/clouds.yaml
+              subPath: clouds.yaml
+              readOnly: true
+      volumes:
+        - name: openstack-config
+          secret:
+            secretName: openstack-clouds-yaml
+            items:
+              - key: clouds.yaml
+                path: clouds.yaml
