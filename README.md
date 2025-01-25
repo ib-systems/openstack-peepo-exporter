@@ -9,3 +9,21 @@ openstack_peepo_exporter_instances_per_hypervisor{hypervisor_id="98cdd331-8bea-4
 openstack_peepo_exporter_instances_per_hypervisor{hypervisor_id="9f9b83fe-78b1-470d-9c4a-4eb64fb5116d",hypervisor_name="compute-2"} 228.0
 openstack_peepo_exporter_instances_per_hypervisor{hypervisor_id="53785372-dedc-47fb-bd45-6d9e6518abac",hypervisor_name="compute-3"} 322.0
 ```
+
+## OpenStack's side applcation credential
+```yaml
+- service: placement
+  method: GET
+  path: /resource_providers
+
+- service: placement
+  method: GET
+  path: /resource_providers/{provider_id}/allocations
+```
+
+## Kubernetes deployment
+
+- Create secret from your `clouds.yaml`
+
+`# kubectl create secret generic openstack-clouds-yaml --from-file=clouds.yaml=clouds.yaml`
+
