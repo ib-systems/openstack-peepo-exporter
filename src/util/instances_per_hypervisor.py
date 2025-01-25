@@ -1,19 +1,16 @@
 import openstack
 
 def export_metrics(cloud_name: str):
-
-    # Initialize connection (assumes clouds.yaml is configured)
+    print(f"exporting metrics for {cloud_name}")
     conn = openstack.connect(cloud=cloud_name)
 
-    # Dictionary to store instance counts per hypervisor
     instance_counts = []
 
-    # Iterate over all resource providers
     for rp in conn.placement.resource_providers():
+        print(f"rp: {rp}")
         hypervisor_id = rp.id
         hypervisor_name = rp.name
         
-        # Get allocations for this resource provider
         allocations = conn.placement.get(f'/resource_providers/{rp.id}/allocations').json()
         instance_count = len(allocations.get('allocations', {}))
         data = {
@@ -25,6 +22,5 @@ def export_metrics(cloud_name: str):
         
         print(f"Hypervisor: {hypervisor_name}, Instances: {instance_count}")
 
-    # Return the dictionary containing hypervisor instance counts
     return instance_counts
     
