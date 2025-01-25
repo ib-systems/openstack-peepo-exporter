@@ -11,6 +11,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ib-systems/openstack-peepo-exporter:$(date +%s)
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to ghcr.io
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build and tag image
+        run: |
+          docker build -t ghcr.io/${{ github.repository }}:latest .    
+      - name: Push image to GHCR
+        run: docker push ghcr.io/${{ github.repository }}:latest
