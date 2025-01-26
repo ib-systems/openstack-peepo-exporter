@@ -21,9 +21,36 @@ openstack_peepo_exporter_instances_per_hypervisor{hypervisor_id="53785372-dedc-4
   path: /resource_providers/{provider_id}/allocations
 ```
 
+## docker-compose deployment
+1. Create `clouds.yaml` as below with your credentials
+```
+clouds:
+  openstack:
+    auth:
+      auth_url: http://1.3.3.7:5000
+      application_credential_id: "1337"
+      application_credential_secret: "T0p-s3cr3t"
+    region_name: "RegionOne"
+    interface: "public"
+    identity_api_version: 3
+    auth_type: "v3applicationcredential"
+```
+```
+docker compose up -d
+```
+
 ## Kubernetes deployment
 
 - Create secret from your `clouds.yaml`
 
-`# kubectl create secret generic openstack-clouds-yaml --from-file=clouds.yaml=clouds.yaml`
+```
+kubectl create secret generic openstack-clouds-yaml --from-file=clouds.yaml=clouds.yaml
+```
 
+- Create deployment
+
+```
+kubectl apply -f kubernetes/01-deployment.yaml
+```
+
+- Expose through service/ingress/whatever you want

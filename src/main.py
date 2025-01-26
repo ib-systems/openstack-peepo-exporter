@@ -15,6 +15,12 @@ if __name__ == "__main__":
             description="Export metrics for a given cloud."
         )
         parser.add_argument(
+            "--addr", required=False, default="0.0.0.0", help="The IP address to listen on."
+        )
+        parser.add_argument(
+            "--port", required=False, type=int, default=8000, help="The port to listen on."
+        )
+        parser.add_argument(
             "--cloud", required=True, help="The name of the cloud."
         )
         args = parser.parse_args()
@@ -24,8 +30,8 @@ if __name__ == "__main__":
         registry.register(InstancesPerHypervisorCollector(args.cloud))
         
         # Start the metrics server
-        start_http_server(8000, registry=registry)
-        logger.info("Exporter running at http://localhost:8000")
+        start_http_server(args.port, args.addr, registry)
+        logger.info(f"Exporter running at http://{args.addr}:{args.port}")
         
         # Keep the main thread alive
         try:

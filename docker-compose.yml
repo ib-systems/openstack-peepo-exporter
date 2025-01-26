@@ -1,0 +1,8 @@
+services:
+  openstack-peepo-exporter:
+    image: ghcr.io/ib-systems/openstack-peepo-exporter:latest
+    ports:
+      - 8000:8000
+    volumes:
+      - ./clouds.yaml:/etc/openstack/clouds.yaml
+    command: ["python", "/app/src/main.py", "--cloud", "openstack"]
