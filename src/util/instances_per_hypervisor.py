@@ -42,4 +42,3 @@ async def export_metrics(cloud_name: str):
             logger.debug(f"Hypervisor: {rp.name}, Instances: {instance_count}")
 
     return instance_counts
-    

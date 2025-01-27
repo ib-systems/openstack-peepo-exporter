@@ -1,0 +1,9 @@
+openstacksdk==4.2.0
+prometheus_client==0.21.1
+pytest<9.0.0,>=8.0.0
+pytest-cov==6.0.0
+pytest-xdist==3.5.0
+flake8==7.1.1
+safety==3.2.14
+pre-commit==4.1.0
+pytest-testinfra==10.1.1
