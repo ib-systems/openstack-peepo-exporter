@@ -1,3 +1,17 @@
 .vscode/
 .github/
 kubernetes/
+requirements-dev.txt
+.pypirc
+.idea
+.flake8
+.pep8
+.pre-commit-config.yaml
+.python-version
+README.md
+.git
+__pycache__/
+Makefile
+tests
+docker-compose.yml
+Dockerfile

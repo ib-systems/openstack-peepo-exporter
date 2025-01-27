@@ -1,11 +1,14 @@
+#  pep8 https://peps.python.org/pep-0008/#imports
+import os
+import argparse
+import time
+import logging
 from prometheus_client import CollectorRegistry, start_http_server
-import argparse, time, logging
 from collectors.instances_per_hypervisor import InstancesPerHypervisorCollector
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -15,24 +18,29 @@ if __name__ == "__main__":
             description="Export metrics for a given cloud."
         )
         parser.add_argument(
-            "--addr", required=False, default="0.0.0.0", help="The IP address to listen on."
+            "--addr",
+            default=os.environ.get("EXPORTER_LISTEN_ADDRESS", "0.0.0.0"),
+            help="The IP address to listen on.",
         )
         parser.add_argument(
-            "--port", required=False, type=int, default=8000, help="The port to listen on."
+            "--port",
+            default=os.environ.get("EXPORTER_LISTEN_PORT", 8000),
+            type=int,
+            help="The port to listen on.",
         )
         parser.add_argument(
-            "--cloud", required=True, help="The name of the cloud."
+            "--cloud", default=os.environ.get("OS_CLOUD"), help="The name of the cloud."
         )
         args = parser.parse_args()
-        
+
         # Register the collector
         registry = CollectorRegistry()
         registry.register(InstancesPerHypervisorCollector(args.cloud))
-        
+
         # Start the metrics server
         start_http_server(args.port, args.addr, registry)
         logger.info(f"Exporter running at http://{args.addr}:{args.port}")
-        
+
         # Keep the main thread alive
         try:
             while True:
@@ -42,4 +50,3 @@ if __name__ == "__main__":
     except Exception as e:
         logger.error(f"Failed to start exporter: {str(e)}")
         raise
-    
