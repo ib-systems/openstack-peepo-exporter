@@ -1,5 +1,8 @@
 # OpenStack Peepo Exporter
-Simpliest exporter for metrics that not covered by vanilla openstack-exporter.
+Simpliest exporter for metrics that not covered by vanilla openstack-exporter
+
+![image](https://github.com/user-attachments/assets/7cb609ff-3e06-438e-a2c8-96ded2697785)
+
 
 ## Sample metrics
 ```
