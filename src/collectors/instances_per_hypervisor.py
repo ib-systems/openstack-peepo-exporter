@@ -6,6 +6,7 @@ from util import instances_per_hypervisor
 
 logger = logging.getLogger(__name__)
 
+
 class InstancesPerHypervisorCollector(Collector):
     def __init__(self, cloud_name):
         super().__init__()
@@ -20,7 +21,7 @@ class InstancesPerHypervisorCollector(Collector):
             self.metrics = new_metrics
             self.last_update = time.time()
             logger.info(f"Updated metrics with {len(new_metrics)} hypervisors")
-            
+
         except Exception as e:
             logger.error(f"Error updating metrics: {str(e)}")
             raise
@@ -28,19 +29,17 @@ class InstancesPerHypervisorCollector(Collector):
     def collect(self):
         if time.time() - self.last_update > self.cache_time:
             self._fetch_metrics()
-        
+
         gauge = GaugeMetricFamily(
-            'openstack_peepo_exporter_instances_per_hypervisor',
-            'Number of instances per hypervisor',
-            labels=['hypervisor_name', 'hypervisor_id']
+            "openstack_peepo_exporter_instances_per_hypervisor",
+            "Number of instances per hypervisor",
+            labels=["hypervisor_name", "hypervisor_id"],
         )
 
         for metric in self.metrics:
             gauge.add_metric(
-                [metric['hypervisor_name'], metric['hypervisor_id']],
-                metric['instance_count']
+                [metric["hypervisor_name"], metric["hypervisor_id"]],
+                metric["instance_count"],
             )
-        
+
         yield gauge
-
-

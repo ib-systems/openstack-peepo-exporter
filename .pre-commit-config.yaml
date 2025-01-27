@@ -1,0 +1,53 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+    -   id: check-docstring-first
+    -   id: check-merge-conflict
+    -   id: mixed-line-ending
+        args: [--fix=lf]
+
+- repo: https://github.com/ambv/black
+  rev: 24.10.0
+  hooks:
+  - id: black
+    language_version: python3.12
+- repo: https://github.com/pre-commit/pygrep-hooks
+  rev: v1.10.0
+  hooks:
+  - id: python-use-type-annotations
+  - id: python-check-blanket-noqa
+  - id: python-no-eval
+  - id: python-check-mock-methods
+  - id: rst-backticks
+  - id: text-unicode-replacement-char
+- repo: https://github.com/jorisroovers/gitlint
+  rev: 'v0.19.1'
+  hooks:
+  - id: gitlint
+- repo: local
+  hooks:
+  - id: flake8
+    name: flake8
+    stages: [pre-commit]
+    language: system
+    entry: flake8
+    types: [python]
+- repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+  rev: 'v1.3.3'
+  hooks:
+  - id: python-safety-dependencies-check
+
+- repo: local
+  hooks:
+  - id: tests
+    name: pytest
+    stages: [pre-commit]
+    language: script
+    entry: /bin/bash -c -o pipefail 'pytest -s -v -x -ra --tb=long' --
+    verbose: true
+    require_serial: true
+    pass_filenames: false
