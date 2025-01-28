@@ -31,11 +31,17 @@ if __name__ == "__main__":
         parser.add_argument(
             "--cloud", default=os.environ.get("OS_CLOUD"), help="The name of the cloud."
         )
+        parser.add_argument(
+            "--cache-time",
+            default=os.environ.get("CACHE_TIME", 60),
+            type=int,
+            help="The time to cache the metrics in seconds.",
+        )
         args = parser.parse_args()
 
         # Register the collector
         registry = CollectorRegistry()
-        registry.register(InstancesPerHypervisorCollector(args.cloud))
+        registry.register(InstancesPerHypervisorCollector(args.cloud, args.cache_time))
 
         # Start the metrics server
         start_http_server(args.port, args.addr, registry)
